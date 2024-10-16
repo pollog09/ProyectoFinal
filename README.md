@@ -8,38 +8,97 @@ Diabeto is a web application designed to predict diabetes in individuals using a
 
 ## Project Structure
 
-- `app/`: Contains the Flask application.
-  - `__init__.py`: Initializes the Flask app and its extensions.
-  - `routes.py`: Defines the routes for the web application.
-  - `models.py`: Contains the database models.
-  - `forms.py`: Defines the forms for user registration and login.
-  - `templates/`: Contains the HTML templates.
-  - `static/`: Contains static files like CSS and images.
-- `config.py`: Configuration file for the application.
-- `auth.py`: Handles authentication using Firebase.
-- `model/`: Contains the machine learning model for diabetes prediction.
+```
+├── src/
+│   ├── __init__.py
+│   ├── config.py
+│   ├── providers/
+│   │   ├── firebase.py
+│   │   ├── model.py
+│   │   └── __init__.py
+│   ├── static/
+│   │   ├── styles.css
+│   │   └── dashboard.css
+│   └── templates/
+│       ├── login.html
+│       ├── register.html
+│       └── dashboard.html
+├── .gitignore
+├── requirements.txt
+└── README.md
+```
+
 
 ## Setup Instructions
 
-1. **Clone the repository**:
-   ```sh
-   git clone https://github.com/yourusername/diabeto.git
-   cd diabeto
-   ```
+### Prerequisites
 
-2. **Create a virtual environment and install dependencies**:
+- Python 3.12
+- Virtual environment (optional but recommended)
+
+### Installation
+
+1. **Clone the repository:**
     ```sh
-    python3 -m venv venv
-    source venv/bin/activate
+    git clone https://github.com/yourusername/your_project.git
+    cd your_project
+    ```
+
+2. **Create and activate a virtual environment:**
+    ```sh
+    python3 -m venv .venv
+    source .venv/bin/activate
+    ```
+
+3. **Install the required packages:**
+    ```sh
     pip install -r requirements.txt
     ```
 
-3. **Running the Project**
-Run the Flask app:
+4. **Set up Firebase configuration:**
+    - Create a `config.py` file in the `src/providers/` directory with your Firebase configuration:
+    ```python
+    firebaseConfig = {
+        "apiKey": "YOUR_API_KEY",
+        "authDomain": "YOUR_AUTH_DOMAIN",
+        "databaseURL": "YOUR_DATABASE_URL",
+        "projectId": "YOUR_PROJECT_ID",
+        "storageBucket": "YOUR_STORAGE_BUCKET",
+        "messagingSenderId": "YOUR_MESSAGING_SENDER_ID",
+        "appId": "YOUR_APP_ID"
+    }
+    ```
 
-Access the web application: Open your web browser and go to http://127.0.0.1:5000.
+5. **Run the application:**
+    ```sh
+    flask run
+    ```
 
-4. **Usage**
-Register: Create a new user account.
-Login: Access the web UI using your credentials.
-Predict Diabetes: Use the machine learning model to predict diabetes based on user input.
+## Usage
+
+1. **Access the application:**
+    Open your web browser and go to `http://127.0.0.1:5000/`.
+
+2. **Login or Register:**
+    - Use the login page to log in with your credentials.
+    - If you don't have an account, use the register page to create one.
+
+3. **Dashboard:**
+    - After logging in, you will be redirected to the dashboard.
+    - Fill in the form with the required fields:
+        - Pregnancies
+        - Glucose
+        - Blood Pressure
+        - Skin Thickness
+        - Insulin
+        - BMI
+        - Diabetes Pedigree Function
+        - Age
+    - Click the "Submit" button to get the diabetes probability.
+
+## Project Details
+
+- **Backend:** Flask
+- **Frontend:** HTML, CSS
+- **Machine Learning Model:** TensorFlow/Keras
+- **Authentication:** Firebase
