@@ -1,7 +1,7 @@
 ## Imports
 import logging
 from flask import Flask, render_template, request, redirect, url_for
-from src.providers import firebase
+from src.providers import firebase, model
 
 ## App
 app = Flask(__name__)
@@ -48,10 +48,23 @@ def register():
         logger.info('Register page accessed')
         return render_template('register.html')
 
-@app.route('/dashboard')
+@app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
+    outcome = None
+    if request.method == 'POST':
+        Pregnancies = int(request.form['Pregnancies'])
+        Glucose = int(request.form['Glucose'])
+        BloodPressure = int(request.form['BloodPressure'])
+        SkinThickness = int(request.form['SkinThickness'])
+        Insulin = int(request.form['Insulin'])
+        BMI = float(request.form['BMI'])
+        DiabetesPedigreeFunction = float(request.form['DiabetesPedigreeFunction'])
+        Age = int(request.form['Age'])
+        
+        outcome = model.run_model(Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI)
+    
     logger.info('Dashboard page accessed')
-    return render_template('home.html')
+    return render_template('dashboard.html', outcome=outcome)
 
 @app.route('/logout')
 def logout():

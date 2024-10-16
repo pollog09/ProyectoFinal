@@ -8,11 +8,11 @@ import matplotlib.pyplot as plt
 import os
     
 
-def run_model(Pregnancies,Glucose,BloodPressure,SkinThickness,Insulin,BMI,DiabetesPedigreeFunction,Age):
+def run_model(Pregnancies,Glucose,BloodPressure,SkinThickness,Insulin,BMI):
     modelo = keras.models.load_model("model/diabetes_model.h5")
     try:
-        result = modelo.predict([[Pregnancies,Glucose,BloodPressure,SkinThickness,Insulin,BMI,DiabetesPedigreeFunction,Age]])
+        result = modelo.predict(Pregnancies,Glucose,BloodPressure,SkinThickness,Insulin,BMI)
         print(result)
     except Exception as e:
-        print(f"An error occurred: {e}")
+        print(f"========================================\r\nAn error occurred: {e}\r\n========================================")
     return
