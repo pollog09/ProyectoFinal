@@ -1,6 +1,7 @@
 import pyrebase
-from config import firebaseConfig
+from src.providers import config
 
+firebaseConfig=config.firebaseConfig
 firebase=pyrebase.initialize_app(firebaseConfig)
 auth=firebase.auth()
 
@@ -14,7 +15,7 @@ def login(email,password):
 def signup(email, password):
     try:
         user= auth.create_user_with_email_and_password(email,password)
-    except:
-        print("User Already Exists")
+    except Exception as e:
+        print(e)
     return
 
