@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 ## Routes
 @app.route('/')
 def home():
-    return redirect(url_for('home'))
+    return render_template('login.html')
 
 ## Registro Login
 @app.route('/login', methods=['GET', 'POST'])
@@ -49,20 +49,22 @@ def register():
         logger.info('Register page accessed')
         return render_template('register.html')
 
+
+## Dashboard
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     outcome = None
     if request.method == 'POST':
-        Pregnancies = int(request.form['Pregnancies'])
-        Glucose = int(request.form['Glucose'])
-        BloodPressure = int(request.form['BloodPressure'])
-        SkinThickness = int(request.form['SkinThickness'])
-        Insulin = int(request.form['Insulin'])
+        Pregnancies = float(request.form['Pregnancies'])
+        Glucose = float(request.form['Glucose'])
+        BloodPressure = float(request.form['BloodPressure'])
+        SkinThickness = float(request.form['SkinThickness'])
+        Insulin = float(request.form['Insulin'])
         BMI = float(request.form['BMI'])
         DiabetesPedigreeFunction = float(request.form['DiabetesPedigreeFunction'])
-        Age = int(request.form['Age'])
+        Age = float(request.form['Age'])
         
-        outcome = model.run_model(Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI)
+        outcome = model.run_model(Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age)
     
     logger.info('Dashboard page accessed')
     return render_template('dashboard.html', outcome=outcome)
