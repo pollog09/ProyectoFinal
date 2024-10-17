@@ -1,10 +1,12 @@
 ## Imports
 import logging
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash, session
 from src.providers import firebase, model
 
 ## App
 app = Flask(__name__)
+app.secret_key = 'your_secret_key'  # Required for session management
+
 # Logs
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -13,6 +15,8 @@ logger = logging.getLogger(__name__)
 ## Routes
 @app.route('/')
 def home():
+    if 'username' in session:
+        return redirect(url_for('dashboard'))
     return render_template('login.html')
 
 ## Registro Login
@@ -24,9 +28,11 @@ def login():
         logger.info(f'Login attempt with username: {username}')
         if (firebase.login(username,password)==True):
             logger.info('Login successful')
+            session['username'] = username  # Store username in session
             return redirect(url_for('dashboard'))
         else:
             logger.warning('Invalid login credentials')
+            flash('Invalid login credentials', 'error')
             return redirect(url_for('login')) 
     else:
         logger.info('login page accessed')
@@ -72,4 +78,5 @@ def dashboard():
 @app.route('/logout')
 def logout():
     logger.info('Logout action initiated')
-    return redirect(url_for('home'))
+    session.pop('username', None)  # Remove username from session
+    return redirect(url_for('login'))
