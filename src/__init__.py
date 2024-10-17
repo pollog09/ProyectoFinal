@@ -13,23 +13,25 @@ logger = logging.getLogger(__name__)
 ## Routes
 @app.route('/')
 def home():
-    logger.info('Home page accessed')
-    return render_template('login.html')
+    return redirect(url_for('home'))
 
 ## Registro Login
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['GET', 'POST'])
 def login():
-    username = request.form['username']
-    password = request.form['password']
-    logger.info(f'Login attempt with username: {username}')
-
-    if (firebase.login(username,password)==True):
-        logger.info('Login successful')
-        return redirect(url_for('dashboard'))
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+        logger.info(f'Login attempt with username: {username}')
+        if (firebase.login(username,password)==True):
+            logger.info('Login successful')
+            return redirect(url_for('dashboard'))
+        else:
+            logger.warning('Invalid login credentials')
+            return redirect(url_for('login')) 
     else:
-        logger.warning('Invalid login credentials')
-        return redirect(url_for('home')) 
-        
+        logger.info('login page accessed')
+        return render_template('login.html')
+    
 ## Registro
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -37,7 +39,6 @@ def register():
         username = request.form['username']
         password = request.form['password']        
         logger.error(firebase.signup(username, password))
-        # Add your registration logic here
         if (firebase.signup(username, password)):
             logger.info('Registration successful')
             return redirect(url_for('login'))
