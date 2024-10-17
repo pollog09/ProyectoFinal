@@ -1,5 +1,6 @@
 ## Imports
-import logging
+import datetime
+import logging, json
 from flask import Flask, render_template, request, redirect, url_for, flash, session
 from src.providers import firebase, model
 
@@ -10,6 +11,29 @@ app.secret_key = 'your_secret_key'  # Required for session management
 # Logs
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+
+## History
+DATA_FILE = 'history.json'
+
+def save_history(record):
+    try:
+        with open(DATA_FILE, 'r') as file:
+            history = json.load(file)
+    except FileNotFoundError:
+        history = []
+
+    history.append(record)
+
+    with open(DATA_FILE, 'w') as file:
+        json.dump(history, file)
+
+def load_history():
+    try:
+        with open(DATA_FILE, 'r') as file:
+            return json.load(file)
+    except FileNotFoundError:
+        return []
 
 
 ## Routes
@@ -62,6 +86,7 @@ def register():
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     outcome = None
+    logger.info(session)
     if 'username' in session:
         if request.method == 'POST':
             try:
@@ -75,14 +100,30 @@ def dashboard():
                 Age = float(request.form['Age'])
                 
                 logger.info(f'Received form data: {request.form}')
-                logger.info('===========================')
                 outcome = model.run_model(Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age)
                 logger.info(f'Model outcome: {outcome}')
+                # Save the new record to history
+                new_record = {
+                    'date': datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
+                    'username': session['username'],
+                    'Pregnancies': str(Pregnancies),
+                    'Glucose': str(Glucose),
+                    'BloodPressure': str(BloodPressure),
+                    'SkinThickness': str(SkinThickness),
+                    'Insulin': str(Insulin),
+                    'BMI': str(BMI),
+                    'DiabetesPedigreeFunction': str(DiabetesPedigreeFunction),
+                    'Age': str(Age),
+                    'Outcome': str(outcome)
+                }
+                save_history(new_record)
+                
             except Exception as e:
                 logger.error(f'Error processing form data: {e}')
         
         logger.info('Dashboard page accessed')
-        return render_template('dashboard.html', outcome=outcome)
+        history = load_history()
+        return render_template('dashboard.html', outcome=outcome, history=history)
     else:
         return render_template('login.html')
 
