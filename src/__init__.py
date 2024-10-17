@@ -43,14 +43,16 @@ def login():
 def register():
     if request.method == 'POST':
         username = request.form['username']
-        password = request.form['password']        
-        logger.error(firebase.signup(username, password))
-        if (firebase.signup(username, password)):
+        password = request.form['password']
+        signup = firebase.signup(username, password).args[1]
+        logger.error(signup)
+        if 'error' not in signup:
             logger.info('Registration successful')
             return redirect(url_for('login'))
         else:
             logger.warning('Registration failed')
-            return 'Registration failed'
+            flash('Registration failed, username already exist or password complexity is below the required level', 'error')
+            return redirect(url_for('register')) 
     else:
         logger.info('Register page accessed')
         return render_template('register.html')
@@ -60,20 +62,29 @@ def register():
 @app.route('/dashboard', methods=['GET', 'POST'])
 def dashboard():
     outcome = None
-    if request.method == 'POST':
-        Pregnancies = float(request.form['Pregnancies'])
-        Glucose = float(request.form['Glucose'])
-        BloodPressure = float(request.form['BloodPressure'])
-        SkinThickness = float(request.form['SkinThickness'])
-        Insulin = float(request.form['Insulin'])
-        BMI = float(request.form['BMI'])
-        DiabetesPedigreeFunction = float(request.form['DiabetesPedigreeFunction'])
-        Age = float(request.form['Age'])
+    if 'username' in session:
+        if request.method == 'POST':
+            try:
+                Pregnancies = float(request.form['Pregnancies'])
+                Glucose = float(request.form['Glucose'])
+                BloodPressure = float(request.form['BloodPressure'])
+                SkinThickness = float(request.form['SkinThickness'])
+                Insulin = float(request.form['Insulin'])
+                BMI = float(request.form['BMI'])
+                DiabetesPedigreeFunction = float(request.form['DiabetesPedigreeFunction'])
+                Age = float(request.form['Age'])
+                
+                logger.info(f'Received form data: {request.form}')
+                logger.info('===========================')
+                outcome = model.run_model(Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age)
+                logger.info(f'Model outcome: {outcome}')
+            except Exception as e:
+                logger.error(f'Error processing form data: {e}')
         
-        outcome = model.run_model(Pregnancies, Glucose, BloodPressure, SkinThickness, Insulin, BMI, DiabetesPedigreeFunction, Age)
-    
-    logger.info('Dashboard page accessed')
-    return render_template('dashboard.html', outcome=outcome)
+        logger.info('Dashboard page accessed')
+        return render_template('dashboard.html', outcome=outcome)
+    else:
+        return render_template('login.html')
 
 @app.route('/logout')
 def logout():
