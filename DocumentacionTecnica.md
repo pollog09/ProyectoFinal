@@ -33,7 +33,7 @@ La estructura del proyecto es la siguiente:
 
 ## ii. Historias de usuario
 
-Las historias de usuario se pueden encontrar en el siguiente enlace: [GitHub Projects](https://github.com/yourusername/your_project/projects)
+Las historias de usuario se pueden encontrar en el siguiente enlace: [GitHub Projects](https://github.com/users/pollog09/projects/4)
 
 ## iii. Detalle del proceso de desarrollo del modelo y sistema
 
