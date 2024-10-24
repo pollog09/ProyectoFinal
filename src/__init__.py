@@ -1,7 +1,7 @@
 ## Imports
 import datetime
 import logging, json
-from flask import Flask, render_template, request, redirect, url_for, flash, session
+from flask import Flask, render_template, request, redirect, url_for, flash, session, send_file
 from src.providers import firebase, model
 
 ## App
@@ -80,6 +80,30 @@ def register():
     else:
         logger.info('Register page accessed')
         return render_template('register.html')
+
+## Forget password
+@app.route('/forget_password', methods=['POST'])
+def forget_password():
+    email = request.form['email']
+    logger.warning("=================================================")
+    logger.warning(email)
+    result = firebase.forget(email)
+    if result == True:
+         flash('Password reset email sent successfully.', 'success')
+    else:
+        flash('Error sending password reset email.', 'danger')
+    return redirect(url_for('login'))
+
+## Export History
+@app.route('/export_history')
+def export_history():
+    try:
+        json_file_path = '../history.json'
+        return send_file(json_file_path, as_attachment=True)
+    except Exception as e:
+        logger.error(f"Error exporting history: {e}")
+        flash('Error exporting history.', 'danger')
+        return redirect(url_for('dashboard'))
 
 
 ## Dashboard

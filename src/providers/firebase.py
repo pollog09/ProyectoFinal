@@ -21,4 +21,12 @@ def signup(email, password):
     except Exception as e:
         print(e)
         return e
+    
 
+def forget(email):
+    try:
+        user=auth.send_password_reset_email(email)
+        return True
+    except Exception as e:
+        print(e)
+        return e
