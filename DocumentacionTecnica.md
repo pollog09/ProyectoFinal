@@ -1,5 +1,7 @@
 # Documentación Técnica
 
+![Arquitectura del Sistema](src/static/tech.webp)
+
 ## i. Descripción de la arquitectura del sistema
 
 El sistema está compuesto por los siguientes componentes principales:
@@ -8,6 +10,21 @@ El sistema está compuesto por los siguientes componentes principales:
 - **Frontend:** HTML, CSS
 - **Modelo de Machine Learning:** TensorFlow/Keras
 - **Autenticación:** Firebase
+
+## Justificación de la selección de tecnologías
+
+### Flask
+Flask es un microframework de Python que permite desarrollar aplicaciones web de manera rápida y sencilla. Su simplicidad y flexibilidad lo hacen ideal para proyectos que no requieren la complejidad de frameworks más grandes como Django. Además, su amplia comunidad y documentación facilitan la resolución de problemas y la integración con otras tecnologías.
+
+### HTML y CSS
+HTML y CSS son las tecnologías estándar para la creación de interfaces web. HTML proporciona la estructura del contenido, mientras que CSS se encarga del diseño y la presentación visual. Estas tecnologías son ampliamente soportadas por todos los navegadores y permiten crear interfaces de usuario atractivas y responsivas.
+
+### TensorFlow/Keras
+TensorFlow es una de las bibliotecas más populares para el desarrollo de modelos de aprendizaje automático. Keras, que es una API de alto nivel para TensorFlow, simplifica la construcción y el entrenamiento de modelos de deep learning. La combinación de ambas herramientas permite desarrollar modelos robustos y eficientes para tareas de predicción.
+
+### Firebase
+Firebase es una plataforma de desarrollo de aplicaciones que proporciona una solución completa para la autenticación de usuarios, almacenamiento de datos y hosting. Su integración con aplicaciones web y móviles es sencilla y segura, lo que facilita la implementación de funcionalidades de autenticación y gestión de usuarios.
+
 
 La estructura del proyecto es la siguiente:
 
