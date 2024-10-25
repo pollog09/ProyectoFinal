@@ -103,3 +103,11 @@ Las historias de usuario se pueden encontrar en el siguiente enlace: [GitHub Pro
 
 - **Pruebas:**
     - Implementar pruebas unitarias y de integración para asegurar la calidad del código y la funcionalidad del sistema.
+ 
+## vii. Bitácora de horas y división del proyecto
+- **Creación de modelo y pruebas:**
+      - Victoria Contreras 8 horas
+  
+ - **Creación de interfaz:**
+       - Jorge González 10 horas
+  
