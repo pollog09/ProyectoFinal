@@ -107,7 +107,10 @@ Las historias de usuario se pueden encontrar en el siguiente enlace: [GitHub Pro
 ## vii. Bitácora de horas y división del proyecto
 - **Creación de modelo y pruebas:**
       - Victoria Contreras 8 horas
+
+![Horas](src/static/bitacora.jpeg)
   
  - **Creación de interfaz:**
        - Jorge González 10 horas
-  
+
+  [GitHub Commits](https://github.com/pollog09/ProyectoFinal/commits/main/)
